@@ -1,0 +1,25 @@
+name: "Update README"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run Script
+        run: node dist/index.js
+      - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          if [[ -n "$(git status --percelain)" ]]; then
+            git commit -m ":wrench: Update readme file"
+            git push origin main
+          fi
