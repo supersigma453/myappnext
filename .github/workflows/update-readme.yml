@@ -19,7 +19,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add .
-          if [[ -n "$(git status --percelain)" ]]; then
+          if [[ -n "$(git status --porcelain)" ]]; then
             git commit -m ":wrench: Update readme file"
             git push origin main
           fi
