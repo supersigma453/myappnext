@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
       "target": "ES2019",
-      "module": "ESNext",
+      "module": "NodeNext",
       "outDir": "dist",
       "esModuleInterop": true,
       "forceConsistentCasingInFileNames": true,
