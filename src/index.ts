@@ -1,25 +1,24 @@
-import { getInput, setFailed } from "@actions/core";
-import { context, getOctokit } from "@actions/github";
+import * as fs from 'node:fs';
+import { getOctokit } from '@actions/github';
+import { getInput } from '@actions/core';
 
-async function run() {
-    const token = getInput("gh-token");
-    const label = getInput("label");
+const token = getInput("gh-token");
+const octokit = getOctokit(token);
 
-    const octokit = getOctokit(token);
-    const pullRequest = context.payload.pull_request;
+async function updateReadme() {
+  const readmePath = 'README.md';
+  const readmeContent = fs.readFileSync(readmePath, 'utf-8');
 
-    try {
-        if (!pullRequest) {
-            throw new Error("This action can only be run on Pull Requests");
-        }
+  const htmlContent = `
+<!-- START_SECTION:html -->
+<h2>My Custom HTML Content</h2>
+<p>This is some <strong>HTML</strong> content added by GitHub Actions.</p>
+<!-- END_SECTION:html -->
+  `;
 
-        await octokit.rest.issues.addLabels({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: pullRequest.number,
-            labels: [label]
-        });
-    } catch (error) {
-        setFailed((error as Error)?.message ?? "Unknown error");
-    }
+  fs.writeFileSync(readmePath, htmlContent);
+
+  console.log('README updated successfully');
 }
+
+updateReadme().catch(console.error);

@@ -1,8 +1,8 @@
 name: "Hello"
 
 on:
-  pull_request:
-    types: [opened, reopened]
+  schedule:
+    - cron: '*/5 * * * *'
 
 jobs:
   hello:
@@ -12,4 +12,3 @@ jobs:
       - uses: ./
         with:
           gh-token: ${{ secrets.GITHUB_TOKEN }}
-          label: 'needs-review'
